@@ -1,0 +1,18 @@
+# Kios Pro Robots Exclusion File
+
+User-agent: *
+
+# Larang bot mengindeks halaman admin sensitif
+Disallow: /admin.html
+Disallow: /api/
+
+# Larang bot mengindeks file laporan atau database (jika terekspos)
+Disallow: /data/
+Disallow: /backup/
+
+# Izinkan bot hanya melihat halaman login (untuk branding saja)
+Allow: /login.html
+Allow: /index.html
+
+# Beritahu mesin pencari untuk tidak menyimpan cache halaman admin
+Noindex: /admin.html

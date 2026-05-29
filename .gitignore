@@ -1,0 +1,29 @@
+# --- Vercel & Deployment ---
+# Folder cache Vercel jangan di-push
+.vercel
+
+# --- Environment Variables (SANGAT PENTING) ---
+# Jangan sampai kredensial TiDB Cloud lo bocor!
+.env
+.env.local
+.env.*.local
+
+# --- Node.js ---
+# Library jangan di-push, berat dan bisa di-install ulang
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Reports & Exports ---
+# Jangan sampai data rekap/laba toko lo nyampah di GitHub
+*.xlsx
+*.xls
+*.csv
+Laporan_*.xlsx
+
+# --- OS & Editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
