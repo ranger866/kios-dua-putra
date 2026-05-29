@@ -3,10 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog | Kios Dua Putra</title>
+    
+    <title>Katalog Produk Kios Dua Putra Gorontalo - Cek Stok Real-Time</title>
+    <meta name="description" content="Cek ketersediaan barang di Kios Dua Putra Gorontalo secara real-time. Katalog lengkap sembako, snack, rokok, dan kebutuhan harian lainnya dengan harga terjangkau.">
+    <meta name="keywords" content="Kios Dua Putra, Kios Gorontalo, Katalog Sembako, Stok Real-time, Toko Kelontong Gorontalo">
+    <meta name="author" content="Kios Dua Putra">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Katalog Produk Kios Dua Putra Gorontalo">
+    <meta property="og:description" content="Sistem pantau stok barang real-time untuk memudahkan belanja Anda di Kios Dua Putra.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Kios Dua Putra",
+      "description": "Kios sembako dan kebutuhan harian di Gorontalo dengan sistem katalog stok real-time.",
+      "image": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gorontalo",
+        "addressCountry": "ID"
+      },
+      "url": "https://kios-dua-putra.vercel.app"
+    }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -17,48 +44,60 @@
     <nav class="sticky top-0 z-50 bg-blue-600 shadow-md p-4">
         <div class="container mx-auto flex justify-center items-center text-white">
             <div class="flex items-center space-x-2">
-                <i class="fas fa-store text-xl"></i>
-                <h1 class="font-extrabold text-lg leading-none uppercase tracking-tighter">KIOS DUA PUTRA</h1>
+                <i class="fas fa-store text-xl" aria-hidden="true"></i>
+                <h1 class="font-extrabold text-lg leading-none uppercase tracking-tighter">KIOS DUA PUTRA GORONTALO</h1>
             </div>
         </div>
     </nav>
 
-    <header class="bg-blue-600 pb-20 pt-6 px-4 rounded-b-[40px] text-white">
-        <div class="container mx-auto">
-            <h2 class="text-2xl font-bold">Katalog Stok Real-Time</h2>
-            <p class="text-blue-100 text-sm opacity-80 mt-1">Data sinkron otomatis tanpa perlu refresh halaman.</p>
-        </div>
+    <header class="container mx-auto p-6 text-center">
+        <h2 class="text-2xl font-bold text-gray-800">Katalog Stok Real-Time</h2>
+        <p class="text-gray-600 mt-2">Daftar produk harian di Kios Dua Putra. Pantau ketersediaan barang secara online sebelum datang ke toko kami.</p>
     </header>
 
-    <main class="container mx-auto px-4 -mt-14">
-        <div class="relative mb-6">
-            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input type="text" id="searchInput" onkeyup="renderKatalog()" 
-                placeholder="Cari barang (Mie, Rokok, dll)..." 
-                class="w-full p-4 pl-12 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/20 text-lg outline-none transition-all">
+    <main class="container mx-auto px-4">
+        <div class="mb-6 space-y-4">
+            <div class="relative">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="Cari beras, minyak, rokok..." 
+                    class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-sm focus:ring-2 focus:ring-blue-500 outline-none text-sm transition-all"
+                    oninput="handleSearch()">
+            </div>
+            
+            <div id="categoryList" class="flex space-x-2 overflow-x-auto no-scrollbar pb-2">
+                </div>
         </div>
 
-        <div id="categoryList" class="flex space-x-2 overflow-x-auto pb-4 no-scrollbar"></div>
-
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="animate-pulse bg-gray-200 h-40 rounded-2xl"></div>
-            <div class="animate-pulse bg-gray-200 h-40 rounded-2xl"></div>
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="col-span-full text-center py-20 text-gray-400">
+                <i class="fas fa-circle-notch fa-spin text-3xl mb-4"></i>
+                <p>Menghubungkan ke database stok...</p>
+            </div>
         </div>
     </main>
+
+    <footer class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-4 text-center md:hidden">
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">© 2026 Kios Dua Putra - Gorontalo</p>
+    </footer>
 
     <script>
         let allProducts = [];
         let activeCat = 'Semua';
 
+        // Fungsi Sinkronisasi Data
         async function fetchProducts() {
             try {
                 const response = await fetch('/api/products');
                 allProducts = await response.json();
                 renderCategories();
                 renderKatalog();
-            } catch (error) { console.error("Gagal sinkron:", error); }
+            } catch (error) { 
+                console.error("Gagal sinkron:", error); 
+                document.getElementById('productGrid').innerHTML = '<p class="col-span-full text-center text-red-500">Gagal memuat data. Periksa koneksi internet.</p>';
+            }
         }
 
+        // Render Tombol Kategori
         function renderCategories() {
             const container = document.getElementById('categoryList');
             const cats = ['Semua', ...new Set(allProducts.map(p => p.category))];
@@ -71,14 +110,21 @@
             `).join('');
         }
 
+        // Render Kartu Produk
         function renderKatalog() {
             const grid = document.getElementById('productGrid');
             const term = document.getElementById('searchInput').value.toLowerCase();
+            
             const filtered = allProducts.filter(p => {
                 const matchSearch = p.name.toLowerCase().includes(term);
                 const matchCat = activeCat === 'Semua' || p.category === activeCat;
                 return matchSearch && matchCat;
             });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400">Produk tidak ditemukan.</div>';
+                return;
+            }
 
             grid.innerHTML = filtered.map(p => {
                 const isEmpty = p.stock <= 0;
@@ -98,12 +144,17 @@
                         <div class="mt-4 pt-3 border-t flex justify-between items-center">
                             <span class="text-[11px] font-bold text-gray-400 tracking-tighter uppercase">Stok: ${p.stock}</span>
                             <div class="w-12 bg-gray-100 h-1 rounded-full overflow-hidden">
-                                <div class="h-full ${isEmpty ? 'bg-red-500' : (isLow ? 'bg-yellow-500' : 'bg-green-500')}" style="width: ${Math.min(p.stock * 10, 100)}%"></div>
+                                <div class="h-full ${isEmpty ? 'bg-red-500' : (isLow ? 'bg-yellow-500' : 'bg-green-500')}" 
+                                     style="width: ${Math.min(p.stock * 10, 100)}%"></div>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function handleSearch() {
+            renderKatalog();
         }
 
         function setCategory(cat) {
@@ -112,6 +163,7 @@
             renderKatalog();
         }
 
+        // Inisialisasi & Auto-refresh (Real-time)
         fetchProducts();
         setInterval(fetchProducts, 5000);
     </script>
