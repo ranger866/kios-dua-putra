@@ -1,282 +1,716 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Kios Dua Putra Admin | Kios Dua Putra Gorontalo</title>
-    <meta name="description" content="Sistem Kasir (POS) dan Inventaris Modern Kios Dua Putra Gorontalo. Efisien, Cepat, dan Akurat.">
-    <meta name="author" content="Kios Dua Putra">
-    <meta name="robots" content="noindex, nofollow">
+    <meta
+      name="description"
+      content="Sistem Kasir (POS) dan Inventaris Modern Kios Dua Putra Gorontalo. Efisien, Cepat, dan Akurat."
+    />
+    <meta name="author" content="Kios Dua Putra" />
+    <meta name="robots" content="noindex, nofollow" />
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Kios Dua Putra Admin - Dua Putra">
-    <meta property="og:description" content="Dashboard manajemen stok dan penjualan real-time.">
-    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kios Dua Putra Admin - Dua Putra" />
+    <meta
+      property="og:description"
+      content="Dashboard manajemen stok dan penjualan real-time."
+    />
+    <meta
+      property="og:image"
+      content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
+    />
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563eb%22/><path d=%22M30 30h40v40H30z%22 fill=%22white%22 opacity=%22.2%22/><path d=%22M50 25L25 40v30h50V40L50 25z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22 stroke-linejoin=%22round%22/></svg>">
-    <meta name="theme-color" content="#2563eb">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563eb%22/><path d=%22M30 30h40v40H30z%22 fill=%22white%22 opacity=%22.2%22/><path d=%22M50 25L25 40v30h50V40L50 25z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22 stroke-linejoin=%22round%22/></svg>"
+    />
+    <meta name="theme-color" content="#2563eb" />
 
     <script>
-        if (sessionStorage.getItem("isLoggedIn") !== "true") window.location.href = "login.html";
+      if (sessionStorage.getItem("isLoggedIn") !== "true")
+        window.location.href = "login.html";
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #f8fafc; overflow-x: hidden; }
-        .module { display: none; }
-        .module.active { display: block; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #f8fafc;
+        overflow-x: hidden;
+      }
+      .module {
+        display: none;
+      }
+      .module.active {
+        display: block;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
 
-        /* Dashboard Styles */
-        .dash-grid { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); grid-auto-flow: column; overflow-x: auto; gap: 0.85rem; padding-bottom: 1rem; }
-        .category-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .category-card:hover { transform: translateY(-4px); }
+      /* Dashboard Styles */
+      .dash-grid {
+        display: grid;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        grid-auto-flow: column;
+        overflow-x: auto;
+        gap: 0.85rem;
+        padding-bottom: 1rem;
+      }
+      .category-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .category-card:hover {
+        transform: translateY(-4px);
+      }
 
-        /* Swal Customization */
-        .swal2-popup { font-family: "Plus Jakarta Sans", sans-serif !important; border-radius: 2.5rem !important; padding: 2rem !important; }
-        
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+      /* Swal Customization */
+      .swal2-popup {
+        font-family: "Plus Jakarta Sans", sans-serif !important;
+        border-radius: 2.5rem !important;
+        padding: 2rem !important;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f1f5f9 25%,
+          #e2e8f0 50%,
+          #f1f5f9 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      .bottom-nav-item {
+        transition: all 0.25s ease;
+      }
+
+      .bottom-nav-item i {
+        transition: all 0.25s ease;
+      }
+
+      .bottom-nav-item.text-blue-600 i {
+        transform: translateY(-2px);
+      }
     </style>
-</head>
-<body class="text-slate-900 pb-24 lg:pb-0">
-
-    <div id="skeletonOverlay" class="fixed inset-0 bg-white z-[300] p-10 flex flex-col space-y-6">
-        <div class="h-10 w-1/4 skeleton rounded-xl"></div>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4"><div class="h-32 skeleton rounded-[2rem]"></div><div class="h-32 skeleton rounded-[2rem]"></div></div>
-        <div class="h-64 w-full skeleton rounded-[3rem]"></div>
+  </head>
+  <body class="text-slate-900 pb-24 lg:pb-0">
+    <div
+      id="skeletonOverlay"
+      class="fixed inset-0 bg-white z-[300] p-10 flex flex-col space-y-6"
+    >
+      <div class="h-10 w-1/4 skeleton rounded-xl"></div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="h-32 skeleton rounded-[2rem]"></div>
+        <div class="h-32 skeleton rounded-[2rem]"></div>
+      </div>
+      <div class="h-64 w-full skeleton rounded-[3rem]"></div>
     </div>
 
     <div id="adminPanel" class="hidden min-h-screen flex flex-col lg:flex-row">
-        
-        <aside class="hidden lg:flex w-72 bg-white border-r border-slate-200 sticky top-0 h-screen flex-col p-6 z-50">
-            <div class="flex items-center space-x-3 mb-10 px-2">
-                <div class="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-500/30 transition-transform hover:rotate-6">
-                    <i class="fas fa-box-open text-xl"></i>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-black text-xl text-blue-600 leading-none uppercase tracking-tighter">Kios Dua Putra</span>
-                    <span class="text-[9px] font-bold text-slate-300 uppercase tracking-widest mt-1">Dua Putra Gorontalo</span>
-                </div>
-            </div>
-            <nav class="space-y-2 flex-1">
-                <button onclick="showModule('dashboard')" class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all">
-                    <i class="fas fa-chart-pie"></i><span>Dashboard</span>
-                </button>
-                <button onclick="showModule('jual')" class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all">
-                    <i class="fas fa-cash-register"></i><span>Kasir / Jual</span>
-                </button>
-                <button onclick="showModule('produk')" class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all">
-                    <i class="fas fa-boxes"></i><span>Kelola Produk</span>
-                </button>
-                <button onclick="showModule('rekap')" class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all">
-                    <i class="fas fa-file-alt"></i><span>Laporan</span>
-                </button>
-            </nav>
-            <button onclick="logout()" class="p-4 text-red-500 font-bold hover:bg-red-50 rounded-2xl transition-all text-left">
-                <i class="fas fa-power-off mr-2"></i>Logout
-            </button>
-        </aside>
-
-        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex justify-around items-center py-3 z-[100] shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
-            <button onclick="showModule('dashboard')" class="bottom-nav-item flex flex-col items-center text-slate-400"><i class="fas fa-chart-pie text-xl"></i></button>
-            <button onclick="showModule('jual')" class="bottom-nav-item flex flex-col items-center text-slate-400"><i class="fas fa-cash-register text-xl"></i></button>
-            <button onclick="showModule('produk')" class="bottom-nav-item flex flex-col items-center text-slate-400"><i class="fas fa-boxes text-xl"></i></button>
-            <button onclick="showModule('rekap')" class="bottom-nav-item flex flex-col items-center text-slate-400"><i class="fas fa-file-alt text-xl"></i></button>
-            <button onclick="logout()" class="bottom-nav-item flex flex-col items-center text-red-400"><i class="fas fa-power-off text-xl"></i></button>
+      <aside
+        class="hidden lg:flex w-72 bg-white border-r border-slate-200 sticky top-0 h-screen flex-col p-6 z-50"
+      >
+        <div class="flex items-center space-x-3 mb-10 px-2">
+          <div
+            class="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-500/30 transition-transform hover:rotate-6"
+          >
+            <i class="fas fa-box-open text-xl"></i>
+          </div>
+          <div class="flex flex-col">
+            <span
+              class="font-black text-xl text-blue-600 leading-none uppercase tracking-tighter"
+              >Kios Dua Putra</span
+            >
+            <span
+              class="text-[9px] font-bold text-slate-300 uppercase tracking-widest mt-1"
+              >Dua Putra Gorontalo</span
+            >
+          </div>
+        </div>
+        <nav class="space-y-2 flex-1">
+          <button
+            onclick="showModule('dashboard')"
+            class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all"
+          >
+            <i class="fas fa-chart-pie"></i><span>Dashboard</span>
+          </button>
+          <button
+            onclick="showModule('jual')"
+            class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all"
+          >
+            <i class="fas fa-cash-register"></i><span>Kasir / Jual</span>
+          </button>
+          <button
+            onclick="showModule('produk')"
+            class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all"
+          >
+            <i class="fas fa-boxes"></i><span>Kelola Produk</span>
+          </button>
+          <button
+            onclick="showModule('pengelola')"
+            class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all"
+          >
+            <i class="fas fa-user-shield text-lg"></i><span>Pengelola</span>
+          </button>
+          <button
+            onclick="showModule('rekap')"
+            class="sidebar-item w-full flex items-center space-x-3 p-4 rounded-2xl font-bold text-slate-400 transition-all"
+          >
+            <i class="fas fa-file-alt"></i><span>Laporan</span>
+          </button>
         </nav>
+        <button
+          onclick="logout()"
+          class="p-4 text-red-500 font-bold hover:bg-red-50 rounded-2xl transition-all text-left"
+        >
+          <i class="fas fa-power-off mr-2"></i>Logout
+        </button>
+      </aside>
 
-        <main class="flex-1">
-            <section id="module-dashboard" class="module active p-4 lg:p-10 space-y-8">
-                <header>
-                    <h1 class="text-3xl font-black tracking-tight">Dashboard Analisis</h1>
-                    <p class="text-slate-400 text-sm font-medium">Selamat datang di sistem manajemen Kios Dua Putra.</p>
-                </header>
+      <nav
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex justify-around items-center py-3 z-[100] shadow-[0_-5px_20px_rgba(0,0,0,0.05)]"
+      >
+        <button
+          onclick="showModule('dashboard')"
+          class="bottom-nav-item flex flex-col items-center text-slate-400"
+        >
+          <i class="fas fa-chart-pie text-xl"></i>
+        </button>
+        <button
+          onclick="showModule('jual')"
+          class="bottom-nav-item flex flex-col items-center text-slate-400"
+        >
+          <i class="fas fa-cash-register text-xl"></i>
+        </button>
+        <button
+          onclick="showModule('produk')"
+          class="bottom-nav-item flex flex-col items-center text-slate-400"
+        >
+          <i class="fas fa-boxes text-xl"></i>
+        </button>
+        <button
+          onclick="showModule('pengelola')"
+          class="bottom-nav-item flex flex-col items-center text-slate-400"
+        >
+          <i class="fas fa-user-shield text-xl"></i>
+        </button>
+        <button
+          onclick="showModule('rekap')"
+          class="bottom-nav-item flex flex-col items-center text-slate-400"
+        >
+          <i class="fas fa-file-alt text-xl"></i>
+        </button>
+        <button
+          onclick="logout()"
+          class="bottom-nav-item flex flex-col items-center text-red-400"
+        >
+          <i class="fas fa-power-off text-xl"></i>
+        </button>
+      </nav>
 
-                <div class="dash-grid no-scrollbar" id="dashCards">
-                    <div class="bg-blue-600 p-6 rounded-[2.5rem] text-white min-w-[200px] shadow-xl shadow-blue-500/20 flex flex-col justify-center">
-                        <p class="text-[10px] font-black opacity-70 uppercase tracking-widest">Laba Hari Ini</p>
-                        <h4 id="dashLaba" class="text-2xl font-black mt-1">Rp 0</h4>
-                    </div>
-                </div>
+      <main class="flex-1">
+        <section
+          id="module-dashboard"
+          class="module active p-4 lg:p-10 space-y-8"
+        >
+          <header>
+            <h1 class="text-3xl font-black tracking-tight">
+              Dashboard Analisis
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">
+              Selamat datang di sistem manajemen Kios Dua Putra.
+            </p>
+          </header>
 
-                <div class="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm">
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 italic">Statistik Penjualan</h4>
-                    <div class="h-80"><canvas id="salesChart"></canvas></div>
-                </div>
-            </section>
+          <div class="dash-grid no-scrollbar" id="dashCards">
+            <div
+              class="bg-blue-600 p-6 rounded-[2.5rem] text-white min-w-[200px] shadow-xl shadow-blue-500/20 flex flex-col justify-center"
+            >
+              <p
+                class="text-[10px] font-black opacity-70 uppercase tracking-widest"
+              >
+                Laba Hari Ini
+              </p>
+              <h4 id="dashLaba" class="text-2xl font-black mt-1">Rp 0</h4>
+            </div>
+          </div>
 
-            <section id="module-jual" class="module p-4 lg:p-10">
-                <div class="flex flex-col lg:flex-row gap-6 items-start">
-                    <div class="w-full lg:w-3/4">
-                        <div class="sticky top-0 lg:top-4 z-40 bg-[#f8fafc]/90 backdrop-blur-md pb-4 pt-2">
-                            <div class="flex gap-2">
-                                <input type="text" id="searchJual" onkeyup="renderJual()" placeholder="Cari barang..." class="flex-1 p-4 bg-white rounded-2xl shadow-sm outline-none border focus:ring-2 focus:ring-blue-500">
-                                <select id="filterCatJual" onchange="renderJual()" class="p-4 bg-white rounded-2xl shadow-sm font-bold text-sm border outline-none cursor-pointer"></select>
-                            </div>
-                        </div>
-                        <div id="gridJual" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-2"></div>
-                    </div>
-                    
-                    <div class="hidden lg:flex lg:w-1/4 bg-white rounded-[2.5rem] border p-6 flex-col shadow-sm sticky top-10 h-[85vh]">
-                        <h3 class="font-black text-xl mb-6">Keranjang</h3>
-                        <div id="cartListDesktop" class="flex-1 overflow-y-auto space-y-4 no-scrollbar"></div>
-                        <div class="pt-6 border-t mt-4">
-                            <div class="flex justify-between font-black text-lg mb-4 text-blue-600">
-                                <span class="text-slate-400 font-bold uppercase text-xs">Total Tagihan</span>
-                                <span id="cartTotalDesktop">Rp 0</span>
-                            </div>
-                            <button onclick="triggerPayment()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-500/20 active:scale-95 transition-all">BAYAR</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          <div
+            class="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm"
+          >
+            <h4
+              class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 italic"
+            >
+              Statistik Penjualan
+            </h4>
+            <div class="h-80"><canvas id="salesChart"></canvas></div>
+          </div>
+        </section>
 
-            <section id="module-produk" class="module p-4 lg:p-10">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-3xl font-black">Kelola Produk</h1>
-                    <button onclick="openMasterModal()" class="hidden lg:block bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold shadow-lg transition active:scale-95">+ Tambah Produk</button>
+        <section id="module-jual" class="module p-4 lg:p-10">
+          <div class="flex flex-col lg:flex-row gap-6 items-start">
+            <div class="w-full lg:w-3/4">
+              <div
+                class="sticky top-0 lg:top-4 z-40 bg-[#f8fafc]/90 backdrop-blur-md pb-4 pt-2"
+              >
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="searchJual"
+                    onkeyup="renderJual()"
+                    placeholder="Cari barang..."
+                    class="flex-1 p-4 bg-white rounded-2xl shadow-sm outline-none border focus:ring-2 focus:ring-blue-500"
+                  />
+                  <select
+                    id="filterCatJual"
+                    onchange="renderJual()"
+                    class="p-4 bg-white rounded-2xl shadow-sm font-bold text-sm border outline-none cursor-pointer"
+                  ></select>
                 </div>
-                <div class="sticky top-0 lg:top-4 z-40 bg-[#f8fafc]/90 backdrop-blur-md pb-4 pt-2">
-                    <div class="flex gap-2">
-                        <input type="text" id="searchProduk" onkeyup="renderProduk()" placeholder="Cari..." class="flex-1 p-4 bg-white rounded-2xl shadow-sm outline-none border focus:ring-2 focus:ring-blue-500">
-                        <select id="filterCatProduk" onchange="renderProduk()" class="p-4 bg-white rounded-2xl shadow-sm font-bold text-sm border outline-none"></select>
-                    </div>
-                </div>
-                <div id="gridProduk" class="space-y-3 mt-2 pb-20"></div>
-                <button onclick="openMasterModal()" class="lg:hidden fixed bottom-24 right-6 w-16 h-16 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center text-xl z-[150]"><i class="fas fa-plus"></i></button>
-            </section>
+              </div>
+              <div
+                id="gridJual"
+                class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-2"
+              ></div>
+            </div>
 
-            <section id="module-rekap" class="module p-4 lg:p-10 text-center py-20">
-                <div class="bg-white p-12 rounded-[3rem] shadow-sm border inline-block">
-                    <i class="fas fa-file-excel text-6xl text-emerald-500 mb-6"></i>
-                    <h1 class="text-2xl font-black mb-2 uppercase tracking-tighter">Laporan Excel</h1>
-                    <p class="text-slate-400 mb-8 text-sm max-w-xs mx-auto">Export seluruh data inventaris dan harga Kios Dua Putra.</p>
-                    <button onclick="exportExcel()" class="bg-emerald-600 text-white px-10 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-500/20 active:scale-95 transition-all">GENERATE .XLSX</button>
+            <div
+              class="hidden lg:flex lg:w-1/4 bg-white rounded-[2.5rem] border p-6 flex-col shadow-sm sticky top-10 h-[85vh]"
+            >
+              <h3 class="font-black text-xl mb-6">Keranjang</h3>
+              <div
+                id="cartListDesktop"
+                class="flex-1 overflow-y-auto space-y-4 no-scrollbar"
+              ></div>
+              <div class="pt-6 border-t mt-4">
+                <div
+                  class="flex justify-between font-black text-lg mb-4 text-blue-600"
+                >
+                  <span class="text-slate-400 font-bold uppercase text-xs"
+                    >Total Tagihan</span
+                  >
+                  <span id="cartTotalDesktop">Rp 0</span>
                 </div>
-            </section>
-        </main>
+                <button
+                  onclick="triggerPayment()"
+                  class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+                >
+                  BAYAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="module-produk" class="module p-4 lg:p-10">
+          <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-black">Kelola Produk</h1>
+            <button
+              onclick="openMasterModal()"
+              class="hidden lg:block bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold shadow-lg transition active:scale-95"
+            >
+              + Tambah Produk
+            </button>
+          </div>
+          <div
+            class="sticky top-0 lg:top-4 z-40 bg-[#f8fafc]/90 backdrop-blur-md pb-4 pt-2"
+          >
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="searchProduk"
+                onkeyup="renderProduk()"
+                placeholder="Cari..."
+                class="flex-1 p-4 bg-white rounded-2xl shadow-sm outline-none border focus:ring-2 focus:ring-blue-500"
+              />
+              <select
+                id="filterCatProduk"
+                onchange="renderProduk()"
+                class="p-4 bg-white rounded-2xl shadow-sm font-bold text-sm border outline-none"
+              ></select>
+            </div>
+          </div>
+          <div id="gridProduk" class="space-y-3 mt-2 pb-20"></div>
+          <button
+            onclick="openMasterModal()"
+            class="lg:hidden fixed bottom-24 right-6 w-16 h-16 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center text-xl z-[150]"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+        </section>
+
+        <section id="module-pengelola" class="module p-4 lg:p-10 space-y-6">
+          <div class="flex justify-between items-center">
+            <div>
+              <h1 class="text-3xl font-black">Data Pengelola</h1>
+              <p class="text-slate-400 text-sm">
+                Kelola akun akses Kios Dua Putra
+              </p>
+            </div>
+            <button
+              onclick="openAdminModal()"
+              class="hidden lg:block bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold shadow-lg transition active:scale-95"
+            >
+              + Pengelola Baru
+            </button>
+          </div>
+
+          <div
+            class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden"
+          >
+            <table class="w-full text-left">
+              <thead class="bg-slate-50 border-b border-slate-100">
+                <tr>
+                  <th
+                    class="p-6 font-black text-[10px] uppercase text-slate-400 tracking-widest"
+                  >
+                    Username
+                  </th>
+                  <th
+                    class="p-6 font-black text-[10px] uppercase text-slate-400 tracking-widest text-right"
+                  >
+                    Aksi
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody"></tbody>
+            </table>
+            <button
+              onclick="openAdminModal()"
+              class="lg:hidden fixed bottom-24 right-6 w-16 h-16 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center text-xl z-[150]"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </section>
+
+        <section id="module-rekap" class="module p-4 lg:p-10 text-center py-20">
+          <div
+            class="bg-white p-12 rounded-[3rem] shadow-sm border inline-block"
+          >
+            <i class="fas fa-file-excel text-6xl text-emerald-500 mb-6"></i>
+            <h1 class="text-2xl font-black mb-2 uppercase tracking-tighter">
+              Laporan Excel
+            </h1>
+            <p class="text-slate-400 mb-8 text-sm max-w-xs mx-auto">
+              Export seluruh data inventaris dan harga Kios Dua Putra.
+            </p>
+            <button
+              onclick="exportExcel()"
+              class="bg-emerald-600 text-white px-10 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-500/20 active:scale-95 transition-all"
+            >
+              GENERATE .XLSX
+            </button>
+          </div>
+        </section>
+      </main>
     </div>
 
-    <div id="mobileCartToast" onclick="toggleMobileCart()" class="lg:hidden fixed bottom-20 left-4 right-4 bg-slate-900 text-white p-4 rounded-2xl flex items-center justify-between shadow-2xl transition-all translate-y-40 opacity-0 z-[150] cursor-pointer border border-slate-700">
-        <div class="flex items-center space-x-3">
-            <div class="bg-blue-600 p-2 rounded-lg shadow-lg shadow-blue-500/20"><i class="fas fa-shopping-basket"></i></div>
-            <div><p id="mobileCartCount" class="text-[10px] font-black opacity-60 uppercase tracking-widest">0 Items</p><p id="mobileCartTotal" class="font-black text-lg leading-none">Rp 0</p></div>
+    <div
+      id="mobileCartToast"
+      onclick="toggleMobileCart()"
+      class="lg:hidden fixed bottom-20 left-4 right-4 bg-slate-900 text-white p-4 rounded-2xl flex items-center justify-between shadow-2xl transition-all translate-y-40 opacity-0 z-[150] cursor-pointer border border-slate-700"
+    >
+      <div class="flex items-center space-x-3">
+        <div class="bg-blue-600 p-2 rounded-lg shadow-lg shadow-blue-500/20">
+          <i class="fas fa-shopping-basket"></i>
         </div>
-        <span class="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-lg">BAYAR <i class="fas fa-arrow-right ml-1"></i></span>
+        <div>
+          <p
+            id="mobileCartCount"
+            class="text-[10px] font-black opacity-60 uppercase tracking-widest"
+          >
+            0 Items
+          </p>
+          <p id="mobileCartTotal" class="font-black text-lg leading-none">
+            Rp 0
+          </p>
+        </div>
+      </div>
+      <span
+        class="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-lg"
+        >BAYAR <i class="fas fa-arrow-right ml-1"></i
+      ></span>
     </div>
 
-    <div id="mobileCartModal" class="hidden fixed inset-0 bg-slate-900/98 z-[200] p-6 flex flex-col text-white">
-        <div class="flex justify-between items-center mb-8"><h2 class="text-2xl font-black uppercase tracking-tighter">Daftar Belanja</h2><button onclick="toggleMobileCart()" class="text-2xl text-slate-500"><i class="fas fa-times"></i></button></div>
-        <div id="cartListMobile" class="flex-1 overflow-y-auto space-y-4 no-scrollbar"></div>
-        <div class="pt-6 border-t border-slate-800 mt-4">
-            <div class="flex justify-between font-black text-2xl mb-6"><span>Total Tagihan</span><span id="cartTotalMobile">Rp 0</span></div>
-            <button onclick="triggerPayment()" class="w-full bg-blue-600 text-white py-5 rounded-3xl font-black text-xl shadow-xl shadow-blue-600/20">BAYAR SEKARANG</button>
+    <div
+      id="mobileCartModal"
+      class="hidden fixed inset-0 bg-slate-900/98 z-[200] p-6 flex flex-col text-white"
+    >
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-black uppercase tracking-tighter">
+          Daftar Belanja
+        </h2>
+        <button onclick="toggleMobileCart()" class="text-2xl text-slate-500">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div
+        id="cartListMobile"
+        class="flex-1 overflow-y-auto space-y-4 no-scrollbar"
+      ></div>
+      <div class="pt-6 border-t border-slate-800 mt-4">
+        <div class="flex justify-between font-black text-2xl mb-6">
+          <span>Total Tagihan</span><span id="cartTotalMobile">Rp 0</span>
         </div>
+        <button
+          onclick="triggerPayment()"
+          class="w-full bg-blue-600 text-white py-5 rounded-3xl font-black text-xl shadow-xl shadow-blue-600/20"
+        >
+          BAYAR SEKARANG
+        </button>
+      </div>
     </div>
 
     <script>
-        let GLOBAL_PRODUCTS = [];
-        let GLOBAL_SALES = {};
-        let CART = [];
-        let CURRENT_TOTAL = 0;
-        let CHART_INSTANCE = null;
+      let GLOBAL_PRODUCTS = [];
+      let GLOBAL_SALES = {};
+      let CART = [];
+      let CURRENT_TOTAL = 0;
+      let CHART_INSTANCE = null;
 
-        const CARD_THEMES = [
-            { bg: 'bg-emerald-50', text: 'text-emerald-600', label: 'text-emerald-400', border: 'border-emerald-100' },
-            { bg: 'bg-amber-50', text: 'text-amber-600', label: 'text-amber-400', border: 'border-amber-100' },
-            { bg: 'bg-rose-50', text: 'text-rose-600', label: 'text-rose-400', border: 'border-rose-100' },
-            { bg: 'bg-purple-50', text: 'text-purple-600', label: 'text-purple-400', border: 'border-purple-100' },
-            { bg: 'bg-sky-50', text: 'text-sky-600', label: 'text-sky-400', border: 'border-sky-100' },
-            { bg: 'bg-orange-50', text: 'text-orange-600', label: 'text-orange-400', border: 'border-orange-100' }
-        ];
+      const CARD_THEMES = [
+        {
+          bg: "bg-emerald-50",
+          text: "text-emerald-600",
+          label: "text-emerald-400",
+          border: "border-emerald-100",
+        },
+        {
+          bg: "bg-amber-50",
+          text: "text-amber-600",
+          label: "text-amber-400",
+          border: "border-amber-100",
+        },
+        {
+          bg: "bg-rose-50",
+          text: "text-rose-600",
+          label: "text-rose-400",
+          border: "border-rose-100",
+        },
+        {
+          bg: "bg-purple-50",
+          text: "text-purple-600",
+          label: "text-purple-400",
+          border: "border-purple-100",
+        },
+        {
+          bg: "bg-sky-50",
+          text: "text-sky-600",
+          label: "text-sky-400",
+          border: "border-sky-100",
+        },
+        {
+          bg: "bg-orange-50",
+          text: "text-orange-600",
+          label: "text-orange-400",
+          border: "border-orange-100",
+        },
+      ];
 
-        async function fetchAllData() {
-            try {
-                const [resP, resS] = await Promise.all([fetch("/api/products"), fetch("/api/sales-report")]);
-                GLOBAL_PRODUCTS = await resP.json();
-                GLOBAL_SALES = await resS.json();
-                document.getElementById("skeletonOverlay").style.display = "none";
-                document.getElementById("adminPanel").classList.remove("hidden");
-                initDashboard();
-                fillFilters();
-            } catch (err) { console.error(err); }
+      async function fetchAllData() {
+        try {
+          const [resP, resS] = await Promise.all([
+            fetch("/api/products"),
+            fetch("/api/sales-report"),
+          ]);
+          GLOBAL_PRODUCTS = await resP.json();
+          GLOBAL_SALES = await resS.json();
+          document.getElementById("skeletonOverlay").style.display = "none";
+          document.getElementById("adminPanel").classList.remove("hidden");
+          initDashboard();
+          fillFilters();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function showModule(id) {
+        document.querySelectorAll(".module").forEach((module) => {
+          module.classList.remove("active");
+        });
+
+        document.getElementById("module-" + id).classList.add("active");
+
+        // RESET SIDEBAR
+        document.querySelectorAll(".sidebar-item").forEach((btn) => {
+          btn.classList.remove(
+            "bg-blue-600",
+            "text-white",
+            "shadow-lg",
+            "shadow-blue-500/20",
+          );
+
+          btn.classList.add("text-slate-400");
+        });
+
+        // RESET BOTTOM NAV
+        document.querySelectorAll(".bottom-nav-item").forEach((btn) => {
+          btn.classList.remove("text-blue-600");
+          btn.classList.add("text-slate-400");
+        });
+
+        // AKTIFKAN MENU YANG DIPILIH
+        const activeButtons = document.querySelectorAll(
+          `button[onclick="showModule('${id}')"]`,
+        );
+
+        activeButtons.forEach((btn) => {
+          // SIDEBAR DESKTOP
+          if (btn.classList.contains("sidebar-item")) {
+            btn.classList.remove("text-slate-400");
+
+            btn.classList.add(
+              "bg-blue-600",
+              "text-white",
+              "shadow-lg",
+              "shadow-blue-500/20",
+            );
+          }
+
+          // BOTTOM NAV MOBILE
+          if (btn.classList.contains("bottom-nav-item")) {
+            btn.classList.remove("text-slate-400");
+
+            btn.classList.add("text-blue-600");
+          }
+        });
+
+        // LOAD DATA MODULE
+        if (id === "jual") {
+          renderJual();
         }
 
-        function showModule(id) {
-            document.querySelectorAll(".module").forEach(m => m.classList.remove("active"));
-            document.getElementById("module-" + id).classList.add("active");
-            document.querySelectorAll(".sidebar-item, .bottom-nav-item").forEach(btn => {
-                btn.classList.remove("text-blue-600", "bg-blue-600", "text-white", "shadow-lg", "shadow-blue-500/20");
-                btn.classList.add("text-slate-400");
-            });
-            const activeBtns = document.querySelectorAll(`button[onclick="showModule('${id}')"]`);
-            activeBtns.forEach(btn => {
-                btn.classList.add("text-blue-600");
-                if(btn.classList.contains("sidebar-item")) { btn.classList.add("bg-blue-600", "text-white", "shadow-lg", "shadow-blue-500/20"); btn.classList.remove("text-blue-600"); }
-            });
-            if(id === 'jual') renderJual();
-            if(id === 'produk') renderProduk();
-            window.scrollTo(0,0);
+        if (id === "produk") {
+          renderProduk();
         }
 
-        function initDashboard() {
-            document.getElementById("dashLaba").innerText = `Rp ${Number(GLOBAL_SALES.dailyProfit).toLocaleString("id-ID")}`;
-            const cardCont = document.getElementById("dashCards");
-            cardCont.querySelectorAll(".dyn").forEach(e => e.remove());
-
-            const cats = [...new Set(GLOBAL_PRODUCTS.map(p => p.category))];
-            cats.forEach((c, index) => {
-                const count = GLOBAL_PRODUCTS.filter(p => p.category === c).length;
-                const theme = CARD_THEMES[index % CARD_THEMES.length];
-                const div = document.createElement("div");
-                div.className = `dyn category-card ${theme.bg} p-6 rounded-[2.5rem] border ${theme.border} min-w-[180px] flex flex-col justify-center shadow-sm`;
-                div.innerHTML = `<p class="text-[10px] font-black ${theme.label} uppercase tracking-widest leading-none">${c}</p><h4 class="text-2xl font-black ${theme.text} mt-1">${count} <span class="text-[10px] opacity-40 font-bold uppercase">Jenis</span></h4>`;
-                cardCont.appendChild(div);
-            });
-
-            const ctx = document.getElementById("salesChart").getContext("2d");
-            if (CHART_INSTANCE) CHART_INSTANCE.destroy();
-            CHART_INSTANCE = new Chart(ctx, { 
-                type: "bar", 
-                data: { labels: GLOBAL_SALES.salesByCat.map(s => s.category), datasets: [{ data: GLOBAL_SALES.salesByCat.map(s => s.total_sold), backgroundColor: "#2563eb", borderRadius: 12 }] }, 
-                options: { 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { display: false } }, 
-                    scales: { 
-                        x: { ticks: { font: { family: "Plus Jakarta Sans", weight: '800', size: 10 } } },
-                        y: { ticks: { font: { family: "Plus Jakarta Sans", weight: '600' } } } 
-                    } 
-                } 
-            });
+        if (id === "pengelola") {
+          fetchAdmins();
         }
 
-        function renderJual() {
-            const search = document.getElementById("searchJual").value.toLowerCase();
-            const cat = document.getElementById("filterCatJual").value;
-            const filtered = GLOBAL_PRODUCTS.filter(p => p.name.toLowerCase().includes(search) && (cat === "Semua" || p.category === cat));
-            document.getElementById("gridJual").innerHTML = filtered.map(p => `
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      function initDashboard() {
+        document.getElementById("dashLaba").innerText =
+          `Rp ${Number(GLOBAL_SALES.dailyProfit).toLocaleString("id-ID")}`;
+        const cardCont = document.getElementById("dashCards");
+        cardCont.querySelectorAll(".dyn").forEach((e) => e.remove());
+
+        const cats = [...new Set(GLOBAL_PRODUCTS.map((p) => p.category))];
+        cats.forEach((c, index) => {
+          const count = GLOBAL_PRODUCTS.filter((p) => p.category === c).length;
+          const theme = CARD_THEMES[index % CARD_THEMES.length];
+          const div = document.createElement("div");
+          div.className = `dyn category-card ${theme.bg} p-6 rounded-[2.5rem] border ${theme.border} min-w-[180px] flex flex-col justify-center shadow-sm`;
+          div.innerHTML = `<p class="text-[10px] font-black ${theme.label} uppercase tracking-widest leading-none">${c}</p><h4 class="text-2xl font-black ${theme.text} mt-1">${count} <span class="text-[10px] opacity-40 font-bold uppercase">Jenis</span></h4>`;
+          cardCont.appendChild(div);
+        });
+
+        const ctx = document.getElementById("salesChart").getContext("2d");
+        if (CHART_INSTANCE) CHART_INSTANCE.destroy();
+        CHART_INSTANCE = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: GLOBAL_SALES.salesByCat.map((s) => s.category),
+            datasets: [
+              {
+                data: GLOBAL_SALES.salesByCat.map((s) => s.total_sold),
+                backgroundColor: "#2563eb",
+                borderRadius: 12,
+              },
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                ticks: {
+                  font: {
+                    family: "Plus Jakarta Sans",
+                    weight: "800",
+                    size: 10,
+                  },
+                },
+              },
+              y: {
+                ticks: { font: { family: "Plus Jakarta Sans", weight: "600" } },
+              },
+            },
+          },
+        });
+      }
+
+      function renderJual() {
+        const search = document
+          .getElementById("searchJual")
+          .value.toLowerCase();
+        const cat = document.getElementById("filterCatJual").value;
+        const filtered = GLOBAL_PRODUCTS.filter(
+          (p) =>
+            p.name.toLowerCase().includes(search) &&
+            (cat === "Semua" || p.category === cat),
+        );
+        document.getElementById("gridJual").innerHTML = filtered
+          .map(
+            (p) => `
                 <button onclick="triggerQtyModal(${p.id})" class="bg-white p-5 rounded-[2.5rem] text-left border border-slate-100 shadow-sm active:scale-95 transition-all hover:border-blue-200">
                     <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">${p.category}</span>
                     <h3 class="font-bold text-sm leading-tight mb-2 h-8 overflow-hidden uppercase">${p.name}</h3>
                     <p class="text-blue-600 font-black">Rp ${Number(p.price_sell).toLocaleString()}</p>
                     <p class="text-[9px] font-bold text-slate-400 mt-1 italic uppercase">Stok: ${p.stock}</p>
-                </button>`).join("");
-        }
+                </button>`,
+          )
+          .join("");
+      }
 
-        function renderProduk() {
-            const search = document.getElementById("searchProduk").value.toLowerCase();
-            const cat = document.getElementById("filterCatProduk").value;
-            const filtered = GLOBAL_PRODUCTS.filter(p => p.name.toLowerCase().includes(search) && (cat === "Semua" || p.category === cat));
-            document.getElementById("gridProduk").innerHTML = filtered.map(p => `
+      function renderProduk() {
+        const search = document
+          .getElementById("searchProduk")
+          .value.toLowerCase();
+        const cat = document.getElementById("filterCatProduk").value;
+        const filtered = GLOBAL_PRODUCTS.filter(
+          (p) =>
+            p.name.toLowerCase().includes(search) &&
+            (cat === "Semua" || p.category === cat),
+        );
+        document.getElementById("gridProduk").innerHTML = filtered
+          .map(
+            (p) => `
                 <div class="bg-white p-5 rounded-[2.5rem] flex justify-between items-center border border-slate-100 shadow-sm hover:border-blue-200 transition-all">
                     <div><h4 class="font-black text-slate-800 leading-none mb-1 uppercase">${p.name}</h4><p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">${p.category} • ${p.stock} ${p.unit}</p></div>
                     <div class="flex gap-2">
@@ -284,106 +718,443 @@
                         <button onclick="openMasterModal(${p.id})" class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center transition active:scale-90"><i class="fas fa-edit"></i></button>
                         <button onclick="deleteProd(${p.id})" class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center transition active:scale-90"><i class="fas fa-trash"></i></button>
                     </div>
-                </div>`).join("");
-        }
+                </div>`,
+          )
+          .join("");
+      }
 
-        async function triggerQtyModal(id) {
-            const p = GLOBAL_PRODUCTS.find(x => x.id === id);
-            const { value: qty } = await Swal.fire({
-                title: `<span class="uppercase font-black text-blue-600 text-xl">${p.name}</span>`,
-                input: "number", inputValue: 1, showCancelButton: true, confirmButtonText: "Tambah", confirmButtonColor: "#2563eb",
-                preConfirm: (v) => { if(!v || v <= 0) return Swal.showValidationMessage('Minimal 1!'); return v; }
-            });
-            if (qty) {
-                const existing = CART.find(i => i.id === p.id);
-                if (existing) existing.qty += parseInt(qty); else CART.push({ ...p, qty: parseInt(qty) });
-                updateCartUI();
-                Swal.fire({ icon: 'success', title: 'Ditambah', timer: 600, showConfirmButton: false, toast: true, position: 'top-end'});
-            }
+      async function triggerQtyModal(id) {
+        const p = GLOBAL_PRODUCTS.find((x) => x.id === id);
+        const { value: qty } = await Swal.fire({
+          title: `<span class="uppercase font-black text-blue-600 text-xl">${p.name}</span>`,
+          input: "number",
+          inputValue: 1,
+          showCancelButton: true,
+          confirmButtonText: "Tambah",
+          confirmButtonColor: "#2563eb",
+          preConfirm: (v) => {
+            if (!v || v <= 0) return Swal.showValidationMessage("Minimal 1!");
+            return v;
+          },
+        });
+        if (qty) {
+          const existing = CART.find((i) => i.id === p.id);
+          if (existing) existing.qty += parseInt(qty);
+          else CART.push({ ...p, qty: parseInt(qty) });
+          updateCartUI();
+          Swal.fire({
+            icon: "success",
+            title: "Ditambah",
+            timer: 600,
+            showConfirmButton: false,
+            toast: true,
+            position: "top-end",
+          });
         }
+      }
 
-        async function triggerPayment() {
-            if (CART.length === 0) return;
-            document.getElementById("mobileCartModal").classList.add("hidden");
-            const { value: money } = await Swal.fire({
-                title: "Pembayaran",
-                html: `<div class="bg-blue-50 p-6 rounded-[2.5rem] mb-4 text-left border border-blue-100"><p class="text-xs font-black text-blue-400 uppercase tracking-widest leading-none">Total Tagihan:</p><h2 class="text-3xl font-black text-blue-600 mt-1">Rp ${Number(CURRENT_TOTAL).toLocaleString()}</h2></div>`,
-                input: "number", inputPlaceholder: "Uang diterima...", showCancelButton: true, confirmButtonText: "Selesaikan", confirmButtonColor: "#2563eb",
-                preConfirm: (v) => { if (!v || v < CURRENT_TOTAL) return Swal.showValidationMessage('Uang kurang!'); return v; }
-            });
-            if (money) {
-                const change = money - CURRENT_TOTAL;
-                await Promise.all(CART.map(item => fetch("/api/inventory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ productId: item.id, qty: item.qty, type: "OUT" }) })));
-                CART = []; updateCartUI(); fetchAllData();
-                Swal.fire({ icon: "success", title: "Lunas!", html: `Kembalian: <b class="text-2xl text-emerald-600">Rp ${Number(change).toLocaleString()}</b>`, confirmButtonColor: "#2563eb" });
-            }
+      async function triggerPayment() {
+        if (CART.length === 0) return;
+        document.getElementById("mobileCartModal").classList.add("hidden");
+        const { value: money } = await Swal.fire({
+          title: "Pembayaran",
+          html: `<div class="bg-blue-50 p-6 rounded-[2.5rem] mb-4 text-left border border-blue-100"><p class="text-xs font-black text-blue-400 uppercase tracking-widest leading-none">Total Tagihan:</p><h2 class="text-3xl font-black text-blue-600 mt-1">Rp ${Number(CURRENT_TOTAL).toLocaleString()}</h2></div>`,
+          input: "number",
+          inputPlaceholder: "Uang diterima...",
+          showCancelButton: true,
+          confirmButtonText: "Selesaikan",
+          confirmButtonColor: "#2563eb",
+          preConfirm: (v) => {
+            if (!v || v < CURRENT_TOTAL)
+              return Swal.showValidationMessage("Uang kurang!");
+            return v;
+          },
+        });
+        if (money) {
+          const change = money - CURRENT_TOTAL;
+          await Promise.all(
+            CART.map((item) =>
+              fetch("/api/inventory", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: item.id,
+                  qty: item.qty,
+                  type: "OUT",
+                }),
+              }),
+            ),
+          );
+          CART = [];
+          updateCartUI();
+          fetchAllData();
+          Swal.fire({
+            icon: "success",
+            title: "Lunas!",
+            html: `Kembalian: <b class="text-2xl text-emerald-600">Rp ${Number(change).toLocaleString()}</b>`,
+            confirmButtonColor: "#2563eb",
+          });
         }
+      }
 
-        async function openMasterModal(id = null) {
-            let p = { name: "", category: "", unit: "", price_buy: "", price_sell: "" };
-            if (id) p = GLOBAL_PRODUCTS.find(x => x.id === id);
-            const { value: f } = await Swal.fire({
-                title: `<span class="font-black uppercase tracking-tighter">${id ? "Edit Barang" : "Baru"}</span>`,
-                html: `<div class="text-left space-y-4 px-1">
+      async function openMasterModal(id = null) {
+        let p = {
+          name: "",
+          category: "",
+          unit: "",
+          price_buy: "",
+          price_sell: "",
+        };
+        if (id) p = GLOBAL_PRODUCTS.find((x) => x.id === id);
+        const { value: f } = await Swal.fire({
+          title: `<span class="font-black uppercase tracking-tighter">${id ? "Edit Barang" : "Baru"}</span>`,
+          html: `<div class="text-left space-y-4 px-1">
                     <input id="sw-n" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none font-bold shadow-inner" placeholder="Nama Barang" value="${p.name}">
                     <div class="grid grid-cols-2 gap-3"><input id="sw-c" class="w-full p-4 bg-slate-50 border rounded-2xl text-sm font-bold" placeholder="Kategori" value="${p.category}"><input id="sw-u" class="w-full p-4 bg-slate-50 border rounded-2xl text-sm font-bold" placeholder="Unit (Pcs/Sachet)" value="${p.unit}"></div>
                     <div class="bg-blue-50/50 p-4 rounded-3xl border border-blue-100"><label class="text-[9px] font-black uppercase text-blue-400">Harga Modal (Rp)</label><input id="sw-b" type="number" class="w-full bg-transparent mt-1 text-2xl font-black text-blue-700 outline-none" value="${p.price_buy}"></div>
                     <div class="bg-emerald-50/50 p-4 rounded-3xl border border-emerald-100"><label class="text-[9px] font-black uppercase text-emerald-400">Harga Jual (Rp)</label><input id="sw-s" type="number" class="w-full bg-transparent mt-1 text-2xl font-black text-emerald-700 outline-none" value="${p.price_sell}"></div>
                 </div>`,
-                showCancelButton: true, confirmButtonText: "Simpan", confirmButtonColor: "#2563eb",
-                preConfirm: () => { const n = document.getElementById("sw-n").value; if (!n) return Swal.showValidationMessage("Nama wajib!"); return { id, name: n, category: document.getElementById("sw-c").value, unit: document.getElementById("sw-u").value, price_buy: document.getElementById("sw-b").value, price_sell: document.getElementById("sw-s").value }; }
+          showCancelButton: true,
+          confirmButtonText: "Simpan",
+          confirmButtonColor: "#2563eb",
+          preConfirm: () => {
+            const n = document.getElementById("sw-n").value;
+            if (!n) return Swal.showValidationMessage("Nama wajib!");
+            return {
+              id,
+              name: n,
+              category: document.getElementById("sw-c").value,
+              unit: document.getElementById("sw-u").value,
+              price_buy: document.getElementById("sw-b").value,
+              price_sell: document.getElementById("sw-s").value,
+            };
+          },
+        });
+        if (f) {
+          await fetch("/api/manage-products", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(f),
+          });
+          fetchAllData();
+        }
+      }
+
+      async function triggerRestock(id) {
+        const p = GLOBAL_PRODUCTS.find((x) => x.id === id);
+        const { value: qty } = await Swal.fire({
+          title: `<span class="text-emerald-600 font-black uppercase">Restock</span>`,
+          html: `<p class="font-bold text-slate-800">${p.name}</p><div class="bg-emerald-50 p-8 rounded-[2.5rem] mt-4 border border-emerald-100 shadow-inner"><input id="sw-q" type="number" class="w-full bg-transparent text-5xl font-black text-emerald-600 text-center outline-none" value="1"></div>`,
+          showCancelButton: true,
+          confirmButtonText: "Update Stok",
+          confirmButtonColor: "#10b981",
+          preConfirm: () => {
+            const v = document.getElementById("sw-q").value;
+            if (!v || v <= 0) return Swal.showValidationMessage("Invalid!");
+            return v;
+          },
+        });
+        if (qty) {
+          await fetch("/api/inventory", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              productId: id,
+              qty: parseInt(qty),
+              type: "IN",
+            }),
+          });
+          fetchAllData();
+        }
+      }
+
+      async function deleteProd(id) {
+        const res = await Swal.fire({
+          title: "Hapus Barang?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#ef4444",
+          confirmButtonText: "Ya, Hapus",
+        });
+        if (res.isConfirmed) {
+          await fetch(`/api/manage-products?id=${id}`, { method: "DELETE" });
+          fetchAllData();
+        }
+      }
+
+      function updateCartUI() {
+        CURRENT_TOTAL = CART.reduce(
+          (acc, curr) => acc + curr.price_sell * curr.qty,
+          0,
+        );
+        const html = CART.map(
+          (item, idx) =>
+            `<div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-100"><div><p class="font-bold text-sm mb-1 uppercase leading-none">${item.name}</p><p class="text-[10px] font-bold opacity-40">${item.qty} x Rp ${Number(item.price_sell).toLocaleString()}</p></div><button onclick="removeFromCart(${idx})" class="text-rose-400 p-2"><i class="fas fa-trash-alt"></i></button></div>`,
+        ).join("");
+        document.getElementById("cartListDesktop").innerHTML =
+          html ||
+          '<p class="text-center text-slate-300 py-10 uppercase font-black text-[10px] tracking-widest">Kosong</p>';
+        document.getElementById("cartListMobile").innerHTML =
+          html ||
+          '<p class="text-center text-slate-500 py-20 font-black uppercase">Belum ada pesanan</p>';
+        const fmt = `Rp ${Number(CURRENT_TOTAL).toLocaleString()}`;
+        document.getElementById("cartTotalDesktop").innerText = fmt;
+        document.getElementById("cartTotalMobile").innerText = fmt;
+        document.getElementById("mobileCartTotal").innerText = fmt;
+        document.getElementById("mobileCartCount").innerText =
+          `${CART.length} ITEMS`;
+        const toast = document.getElementById("mobileCartToast");
+        if (CART.length > 0)
+          toast.classList.remove("translate-y-40", "opacity-0");
+        else toast.classList.add("translate-y-40", "opacity-0");
+      }
+
+      function fillFilters() {
+        const cats = [
+          "Semua",
+          ...new Set(GLOBAL_PRODUCTS.map((p) => p.category)),
+        ];
+        const opt = cats
+          .map((c) => `<option value="${c}">${c}</option>`)
+          .join("");
+        document.getElementById("filterCatJual").innerHTML = opt;
+        document.getElementById("filterCatProduk").innerHTML = opt;
+      }
+
+      function removeFromCart(i) {
+        CART.splice(i, 1);
+        updateCartUI();
+      }
+      function toggleMobileCart() {
+        document.getElementById("mobileCartModal").classList.toggle("hidden");
+      }
+
+      async function fetchAdmins() {
+        try {
+          const res = await fetch("/api/admins");
+          const admins = await res.json();
+          renderAdminTable(admins);
+        } catch (err) {
+          console.error("Gagal mengambil data pengelola:", err);
+        }
+      }
+
+      function renderAdminTable(admins) {
+        const currentUser = sessionStorage.getItem("username");
+
+        document.getElementById("adminTableBody").innerHTML = admins
+          .map(
+            (a) => `
+        <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-all">
+            <td class="p-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-black">
+                        ${a.username.charAt(0).toUpperCase()}
+                    </div>
+                    <span class="font-bold text-slate-700">${a.username}</span>
+                </div>
+            </td>
+
+            <td class="p-6 text-right">
+
+                <button
+                    onclick='editAdmin(${a.id}, ${JSON.stringify(a.username)})'
+                    class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-all mr-2">
+                    <i class="fas fa-edit"></i>
+                </button>
+
+                ${
+                  a.username !== currentUser
+                    ? `
+                    <button
+                        onclick="deleteAdmin(${a.id})"
+                        class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-100 transition-all">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    `
+                    : `
+                    <button
+                        disabled
+                        class="w-10 h-10 bg-slate-100 text-slate-300 rounded-xl cursor-not-allowed">
+                        <i class="fas fa-lock"></i>
+                    </button>
+                    `
+                }
+
+            </td>
+        </tr>
+    `,
+          )
+          .join("");
+      }
+
+      // Modal Tambah Admin ke tabel 'admins'
+      async function openAdminModal() {
+        const { value: f } = await Swal.fire({
+          title:
+            '<span class="font-black uppercase tracking-tighter text-xl">Tambah Admin Baru</span>',
+          html: `
+                    <div class="text-left space-y-4 pt-4">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-1">Username</label>
+                            <input id="adm-name" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none font-bold" placeholder="Username">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-1">Password</label>
+                            <input id="adm-pass" type="password" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none font-bold" placeholder="Password">
+                        </div>
+                    </div>`,
+          showCancelButton: true,
+          confirmButtonText: "Simpan Admin",
+          confirmButtonColor: "#2563eb",
+          preConfirm: () => {
+            const u = document.getElementById("adm-name").value;
+            const p = document.getElementById("adm-pass").value;
+            if (!u || !p)
+              return Swal.showValidationMessage("Data tidak boleh kosong!");
+            return { username: u, password: p };
+          },
+        });
+
+        if (f) {
+          const res = await fetch("/api/admins", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(f),
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            fetchAdmins();
+            Swal.fire({
+              icon: "success",
+              title: "Admin Berhasil Ditambah",
+              timer: 800,
+              showConfirmButton: false,
             });
-            if (f) { await fetch("/api/manage-products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(f) }); fetchAllData(); }
+          }
         }
+      }
 
-        async function triggerRestock(id) {
-            const p = GLOBAL_PRODUCTS.find(x => x.id === id);
-            const { value: qty } = await Swal.fire({
-                title: `<span class="text-emerald-600 font-black uppercase">Restock</span>`,
-                html: `<p class="font-bold text-slate-800">${p.name}</p><div class="bg-emerald-50 p-8 rounded-[2.5rem] mt-4 border border-emerald-100 shadow-inner"><input id="sw-q" type="number" class="w-full bg-transparent text-5xl font-black text-emerald-600 text-center outline-none" value="1"></div>`,
-                showCancelButton: true, confirmButtonText: 'Update Stok', confirmButtonColor: '#10b981',
-                preConfirm: () => { const v = document.getElementById("sw-q").value; if (!v || v <= 0) return Swal.showValidationMessage('Invalid!'); return v; }
+      async function editAdmin(id, currentUsername) {
+        const { value: f } = await Swal.fire({
+          title: "Edit Pengelola",
+          html: `
+            <input id="adm-name"
+                class="w-full p-4 bg-slate-50 border rounded-2xl outline-none font-bold"
+                value="${currentUsername}"
+                placeholder="Username">
+
+            <input id="adm-pass"
+                type="password"
+                class="w-full p-4 bg-slate-50 border rounded-2xl outline-none font-bold mt-3"
+                placeholder="Password baru (opsional)">
+        `,
+          showCancelButton: true,
+          confirmButtonText: "Simpan",
+          confirmButtonColor: "#2563eb",
+          preConfirm: () => {
+            const username = document.getElementById("adm-name").value.trim();
+
+            if (!username) {
+              Swal.showValidationMessage("Username wajib diisi");
+              return false;
+            }
+
+            return {
+              id,
+              username,
+              password: document.getElementById("adm-pass").value,
+            };
+          },
+        });
+
+        if (f) {
+          const res = await fetch("/api/admins", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(f),
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            if (currentUsername === sessionStorage.getItem("username")) {
+              sessionStorage.setItem("username", f.username);
+            }
+
+            fetchAdmins();
+
+            Swal.fire({
+              icon: "success",
+              title: "Berhasil diperbarui",
+              timer: 1000,
+              showConfirmButton: false,
             });
-            if (qty) { await fetch("/api/inventory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ productId: id, qty: parseInt(qty), type: "IN" }) }); fetchAllData(); }
+          }
         }
+      }
 
-        async function deleteProd(id) {
-            const res = await Swal.fire({ title: 'Hapus Barang?', icon: "warning", showCancelButton: true, confirmButtonColor: "#ef4444", confirmButtonText: "Ya, Hapus" });
-            if (res.isConfirmed) { await fetch(`/api/manage-products?id=${id}`, { method: "DELETE" }); fetchAllData(); }
+      async function deleteAdmin(id) {
+        const resSwal = await Swal.fire({
+          title: "Hapus Akses?",
+          text: "User ini tidak akan bisa login lagi!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#ef4444",
+          confirmButtonText: "Ya, Hapus",
+        });
+
+        if (resSwal.isConfirmed) {
+          const res = await fetch(`/api/admins?id=${id}`, {
+            method: "DELETE",
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            fetchAdmins();
+
+            Swal.fire({
+              icon: "success",
+              title: "Admin Berhasil Dihapus",
+              timer: 800,
+              showConfirmButton: false,
+            });
+          }
         }
+      }
 
-        function updateCartUI() {
-            CURRENT_TOTAL = CART.reduce((acc, curr) => acc + (curr.price_sell * curr.qty), 0);
-            const html = CART.map((item, idx) => `<div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-100"><div><p class="font-bold text-sm mb-1 uppercase leading-none">${item.name}</p><p class="text-[10px] font-bold opacity-40">${item.qty} x Rp ${Number(item.price_sell).toLocaleString()}</p></div><button onclick="removeFromCart(${idx})" class="text-rose-400 p-2"><i class="fas fa-trash-alt"></i></button></div>`).join("");
-            document.getElementById("cartListDesktop").innerHTML = html || '<p class="text-center text-slate-300 py-10 uppercase font-black text-[10px] tracking-widest">Kosong</p>';
-            document.getElementById("cartListMobile").innerHTML = html || '<p class="text-center text-slate-500 py-20 font-black uppercase">Belum ada pesanan</p>';
-            const fmt = `Rp ${Number(CURRENT_TOTAL).toLocaleString()}`;
-            document.getElementById("cartTotalDesktop").innerText = fmt;
-            document.getElementById("cartTotalMobile").innerText = fmt;
-            document.getElementById("mobileCartTotal").innerText = fmt;
-            document.getElementById("mobileCartCount").innerText = `${CART.length} ITEMS`;
-            const toast = document.getElementById("mobileCartToast");
-            if(CART.length > 0) toast.classList.remove("translate-y-40", "opacity-0"); else toast.classList.add("translate-y-40", "opacity-0");
+      function exportExcel() {
+        const ws = XLSX.utils.json_to_sheet(GLOBAL_PRODUCTS);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Data");
+        XLSX.writeFile(wb, "Laporan_Kios_DuaPutra.xlsx");
+      }
+
+      async function logout() {
+        const res = await Swal.fire({
+          title: "Logout?",
+          text: "Sesi anda akan dihapus.",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#ef4444",
+          confirmButtonText: "Ya, Keluar",
+        });
+        if (res.isConfirmed) {
+          sessionStorage.clear();
+          window.location.href = "login.html";
         }
+      }
 
-        function fillFilters() {
-            const cats = ["Semua", ...new Set(GLOBAL_PRODUCTS.map(p => p.category))];
-            const opt = cats.map(c => `<option value="${c}">${c}</option>`).join("");
-            document.getElementById("filterCatJual").innerHTML = opt;
-            document.getElementById("filterCatProduk").innerHTML = opt;
-        }
+      fetchAllData();
+      fetchAdmins();
 
-        function removeFromCart(i) { CART.splice(i, 1); updateCartUI(); }
-        function toggleMobileCart() { document.getElementById("mobileCartModal").classList.toggle("hidden"); }
-        function exportExcel() { const ws = XLSX.utils.json_to_sheet(GLOBAL_PRODUCTS); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Data"); XLSX.writeFile(wb, "Laporan_Kios_DuaPutra.xlsx"); }
-        
-        async function logout() {
-            const res = await Swal.fire({ title: 'Logout?', text: 'Sesi anda akan dihapus.', icon: "question", showCancelButton: true, confirmButtonColor: "#ef4444", confirmButtonText: "Ya, Keluar" });
-            if (res.isConfirmed) { sessionStorage.clear(); window.location.href = "login.html"; }
-        }
-
-        fetchAllData();
+      document.addEventListener("DOMContentLoaded", () => {
         showModule("dashboard");
+      });
     </script>
-</body>
+  </body>
 </html>

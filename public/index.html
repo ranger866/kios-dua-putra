@@ -83,7 +83,26 @@
     <script>
         let allProducts = [];
         let activeCat = 'Semua';
+        let currVer = null;
 
+        async function checkUpdates() {
+            try {
+                const res = await fetch('/api/version');
+                const data = await res.json();
+                if (currVer === null) {
+                    currVer = data.version;
+                    return;
+                }
+
+                if (data.version !== currVer) {
+                    currVer = data.version;
+                    fetchProducts();
+                }
+            } catch (err) {
+                console.error("Gagal cek Update: ", err);
+            }
+        }
+            
         // Fungsi Sinkronisasi Data
         async function fetchProducts() {
             try {
@@ -163,9 +182,15 @@
             renderKatalog();
         }
 
-        // Inisialisasi & Auto-refresh (Real-time)
         fetchProducts();
-        setInterval(fetchProducts, 5000);
+
+        (async () => {
+            const res = await fetch('/api/version');
+            const data = await res.json();
+            currentVersion = data.version;
+        })();
+
+        setInterval(checkUpdates, 5000);
     </script>
 </body>
 </html>
