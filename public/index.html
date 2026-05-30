@@ -1,196 +1,265 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Katalog Produk Kios Dua Putra Gorontalo - Cek Stok Real-Time</title>
-    <meta name="description" content="Cek ketersediaan barang di Kios Dua Putra Gorontalo secara real-time. Katalog lengkap sembako, snack, rokok, dan kebutuhan harian lainnya dengan harga terjangkau.">
-    <meta name="keywords" content="Kios Dua Putra, Kios Gorontalo, Katalog Sembako, Stok Real-time, Toko Kelontong Gorontalo">
-    <meta name="author" content="Kios Dua Putra">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Katalog Produk Kios Dua Putra Gorontalo">
-    <meta property="og:description" content="Sistem pantau stok barang real-time untuk memudahkan belanja Anda di Kios Dua Putra.">
-    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+    <title>Katalog Produk Kios Dua Putra Gorontalo - Cek Stok Real-Time</title>
+    <meta
+      name="description"
+      content="Cek ketersediaan barang di Kios Dua Putra Gorontalo secara real-time. Katalog lengkap sembako, snack, rokok, dan kebutuhan harian lainnya dengan harga terjangkau."
+    />
+    <meta
+      name="keywords"
+      content="Kios Dua Putra, Kios Gorontalo, Katalog Sembako, Stok Real-time, Toko Kelontong Gorontalo"
+    />
+    <meta name="author" content="Kios Dua Putra" />
+
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Katalog Produk Kios Dua Putra Gorontalo"
+    />
+    <meta
+      property="og:description"
+      content="Sistem pantau stok barang real-time untuk memudahkan belanja Anda di Kios Dua Putra."
+    />
+    <meta
+      property="og:image"
+      content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
+    />
 
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Store",
-      "name": "Kios Dua Putra",
-      "description": "Kios sembako dan kebutuhan harian di Gorontalo dengan sistem katalog stok real-time.",
-      "image": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Gorontalo",
-        "addressCountry": "ID"
-      },
-      "url": "https://kios-dua-putra.vercel.app"
-    }
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "Kios Dua Putra",
+            "url": "https://kios-dua-putra.vercel.app"
+          },
+          {
+            "@type": "Store",
+            "name": "Kios Dua Putra",
+            "description": "Kios sembako dan kebutuhan harian di Gorontalo dengan sistem katalog stok real-time.",
+            "image": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+            "url": "https://kios-dua-putra.vercel.app",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Gorontalo",
+              "addressCountry": "ID"
+            }
+          }
+        ]
+      }
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-900 pb-20">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-900 pb-20">
     <nav class="sticky top-0 z-50 bg-blue-600 shadow-md p-4">
-        <div class="container mx-auto flex justify-center items-center text-white">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-store text-xl" aria-hidden="true"></i>
-                <h1 class="font-extrabold text-lg leading-none uppercase tracking-tighter">KIOS DUA PUTRA GORONTALO</h1>
-            </div>
+      <div
+        class="container mx-auto flex justify-center items-center text-white"
+      >
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-store text-xl" aria-hidden="true"></i>
+          <h1
+            class="font-extrabold text-lg leading-none uppercase tracking-tighter"
+          >
+            KIOS DUA PUTRA GORONTALO
+          </h1>
         </div>
+      </div>
     </nav>
 
     <header class="container mx-auto p-6 text-center">
-        <h2 class="text-2xl font-bold text-gray-800">Katalog Stok Real-Time</h2>
-        <p class="text-gray-600 mt-2">Daftar produk harian di Kios Dua Putra. Pantau ketersediaan barang secara online sebelum datang ke toko kami.</p>
+      <h2 class="text-2xl font-bold text-gray-800">Katalog Stok Real-Time</h2>
+      <p class="text-gray-600 mt-2">
+        Daftar produk harian di Kios Dua Putra. Pantau ketersediaan barang
+        secara online sebelum datang ke toko kami.
+      </p>
     </header>
 
     <main class="container mx-auto px-4">
-        <div class="mb-6 space-y-4">
-            <div class="relative">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="searchInput" placeholder="Cari beras, minyak, rokok..." 
-                    class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-sm focus:ring-2 focus:ring-blue-500 outline-none text-sm transition-all"
-                    oninput="handleSearch()">
-            </div>
-            
-            <div id="categoryList" class="flex space-x-2 overflow-x-auto no-scrollbar pb-2">
-                </div>
+      <div class="mb-6 space-y-4">
+        <div class="relative">
+          <i
+            class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+          ></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari beras, minyak, rokok..."
+            class="w-full pl-12 pr-4 py-4 rounded-2xl border-none shadow-sm focus:ring-2 focus:ring-blue-500 outline-none text-sm transition-all"
+            oninput="handleSearch()"
+          />
         </div>
 
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div class="col-span-full text-center py-20 text-gray-400">
-                <i class="fas fa-circle-notch fa-spin text-3xl mb-4"></i>
-                <p>Menghubungkan ke database stok...</p>
-            </div>
+        <div
+          id="categoryList"
+          class="flex space-x-2 overflow-x-auto no-scrollbar pb-2"
+        ></div>
+      </div>
+
+      <div
+        id="productGrid"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
+        <div class="col-span-full text-center py-20 text-gray-400">
+          <i class="fas fa-circle-notch fa-spin text-3xl mb-4"></i>
+          <p>Menghubungkan ke database stok...</p>
         </div>
+      </div>
     </main>
 
-    <footer class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-4 text-center md:hidden">
-        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">© 2026 Kios Dua Putra - Gorontalo</p>
+    <footer
+      class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-4 text-center md:hidden"
+    >
+      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+        © 2026 Kios Dua Putra - Gorontalo
+      </p>
     </footer>
 
     <script>
-        let allProducts = [];
-        let activeCat = 'Semua';
-        let currVer = null;
+      let allProducts = [];
+      let activeCat = "Semua";
+      let currVer = null;
 
-        async function checkUpdates() {
-            try {
-                const res = await fetch('/api/version');
-                const data = await res.json();
-                if (currVer === null) {
-                    currVer = data.version;
-                    return;
-                }
+      async function checkUpdates() {
+        try {
+          const res = await fetch("/api/version");
+          const data = await res.json();
+          if (currVer === null) {
+            currVer = data.version;
+            return;
+          }
 
-                if (data.version !== currVer) {
-                    currVer = data.version;
-                    fetchProducts();
-                }
-            } catch (err) {
-                console.error("Gagal cek Update: ", err);
-            }
+          if (data.version !== currVer) {
+            currVer = data.version;
+            fetchProducts();
+          }
+        } catch (err) {
+          console.error("Gagal cek Update: ", err);
         }
-            
-        // Fungsi Sinkronisasi Data
-        async function fetchProducts() {
-            try {
-                const response = await fetch('/api/products');
-                allProducts = await response.json();
-                renderCategories();
-                renderKatalog();
-            } catch (error) { 
-                console.error("Gagal sinkron:", error); 
-                document.getElementById('productGrid').innerHTML = '<p class="col-span-full text-center text-red-500">Gagal memuat data. Periksa koneksi internet.</p>';
-            }
-        }
+      }
 
-        // Render Tombol Kategori
-        function renderCategories() {
-            const container = document.getElementById('categoryList');
-            const cats = ['Semua', ...new Set(allProducts.map(p => p.category))];
-            container.innerHTML = cats.map(cat => `
+      // Fungsi Sinkronisasi Data
+      async function fetchProducts() {
+        try {
+          const response = await fetch("/api/products");
+          allProducts = await response.json();
+          renderCategories();
+          renderKatalog();
+        } catch (error) {
+          console.error("Gagal sinkron:", error);
+          document.getElementById("productGrid").innerHTML =
+            '<p class="col-span-full text-center text-red-500">Gagal memuat data. Periksa koneksi internet.</p>';
+        }
+      }
+
+      // Render Tombol Kategori
+      function renderCategories() {
+        const container = document.getElementById("categoryList");
+        const cats = ["Semua", ...new Set(allProducts.map((p) => p.category))];
+        container.innerHTML = cats
+          .map(
+            (cat) => `
                 <button onclick="setCategory('${cat}')" 
                     class="px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm border transition-all whitespace-nowrap 
-                    ${activeCat === cat ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-white text-gray-600 border-gray-100'}">
+                    ${activeCat === cat ? "bg-blue-600 text-white border-blue-600 shadow-md" : "bg-white text-gray-600 border-gray-100"}">
                     ${cat}
                 </button>
-            `).join('');
+            `,
+          )
+          .join("");
+      }
+
+      // Render Kartu Produk
+      function renderKatalog() {
+        const grid = document.getElementById("productGrid");
+        const term = document.getElementById("searchInput").value.toLowerCase();
+
+        const filtered = allProducts.filter((p) => {
+          const matchSearch = p.name.toLowerCase().includes(term);
+          const matchCat = activeCat === "Semua" || p.category === activeCat;
+          return matchSearch && matchCat;
+        });
+
+        if (filtered.length === 0) {
+          grid.innerHTML =
+            '<div class="col-span-full text-center py-10 text-gray-400">Produk tidak ditemukan.</div>';
+          return;
         }
 
-        // Render Kartu Produk
-        function renderKatalog() {
-            const grid = document.getElementById('productGrid');
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            
-            const filtered = allProducts.filter(p => {
-                const matchSearch = p.name.toLowerCase().includes(term);
-                const matchCat = activeCat === 'Semua' || p.category === activeCat;
-                return matchSearch && matchCat;
-            });
+        grid.innerHTML = filtered
+          .map((p) => {
+            const isEmpty = p.stock <= 0;
+            const isLow = p.stock > 0 && p.stock < 10;
+            let badgeStyle = isEmpty
+              ? "bg-red-100 text-red-700"
+              : isLow
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-green-100 text-green-700";
 
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400">Produk tidak ditemukan.</div>';
-                return;
-            }
-
-            grid.innerHTML = filtered.map(p => {
-                const isEmpty = p.stock <= 0;
-                const isLow = p.stock > 0 && p.stock < 10;
-                let badgeStyle = isEmpty ? "bg-red-100 text-red-700" : (isLow ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700");
-
-                return `
+            return `
                     <div class="bg-white p-4 rounded-[24px] shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                         <div>
                             <span class="text-[10px] font-black px-2 py-1 rounded-lg uppercase ${badgeStyle}">
-                                ${isEmpty ? 'Habis' : p.category}
+                                ${isEmpty ? "Habis" : p.category}
                             </span>
                             <h3 class="font-bold text-gray-800 mt-2 leading-tight">${p.name}</h3>
-                            <p class="text-blue-600 font-extrabold text-lg mt-1">Rp ${Number(p.price_sell).toLocaleString('id-ID')}</p>
+                            <p class="text-blue-600 font-extrabold text-lg mt-1">Rp ${Number(p.price_sell).toLocaleString("id-ID")}</p>
                             <p class="text-gray-400 text-[10px] italic">per ${p.unit}</p>
                         </div>
                         <div class="mt-4 pt-3 border-t flex justify-between items-center">
                             <span class="text-[11px] font-bold text-gray-400 tracking-tighter uppercase">Stok: ${p.stock}</span>
                             <div class="w-12 bg-gray-100 h-1 rounded-full overflow-hidden">
-                                <div class="h-full ${isEmpty ? 'bg-red-500' : (isLow ? 'bg-yellow-500' : 'bg-green-500')}" 
+                                <div class="h-full ${isEmpty ? "bg-red-500" : isLow ? "bg-yellow-500" : "bg-green-500"}" 
                                      style="width: ${Math.min(p.stock * 10, 100)}%"></div>
                             </div>
                         </div>
                     </div>
                 `;
-            }).join('');
-        }
+          })
+          .join("");
+      }
 
-        function handleSearch() {
-            renderKatalog();
-        }
+      function handleSearch() {
+        renderKatalog();
+      }
 
-        function setCategory(cat) {
-            activeCat = cat;
-            renderCategories();
-            renderKatalog();
-        }
+      function setCategory(cat) {
+        activeCat = cat;
+        renderCategories();
+        renderKatalog();
+      }
 
-        fetchProducts();
+      fetchProducts();
 
-        (async () => {
-            const res = await fetch('/api/version');
-            const data = await res.json();
-            currentVersion = data.version;
-        })();
+      (async () => {
+        const res = await fetch("/api/version");
+        const data = await res.json();
+        currentVersion = data.version;
+      })();
 
-        setInterval(checkUpdates, 5000);
+      setInterval(checkUpdates, 5000);
     </script>
-</body>
+  </body>
 </html>
