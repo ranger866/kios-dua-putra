@@ -131,6 +131,19 @@
       </div>
     </main>
 
+    <div class="container mx-auto px-4 mt-8 mb-12">
+      <div class="w-full aspect-video rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1032.4623644730757!2d123.0866283222367!3d0.6124010308630602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMMKwMzYnNDQuMyJOIDEyM8KwMDUnMTIuMCJF!5e1!3m2!1sen!2sus!4v1780151105398!5m2!1sen!2sus" 
+          class="w-full h-full" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
     <footer
       class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-4 text-center md:hidden"
     >
@@ -258,7 +271,7 @@
       (async () => {
         const res = await fetch("/api/version");
         const data = await res.json();
-        currentVersion = data.version;
+        currVer = data.version;
       })();
 
       setInterval(checkUpdates, 5000);
